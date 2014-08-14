@@ -184,13 +184,24 @@ public class DecalEditor : Editor {
 		List<string> layers = new List<string>();
 		for(int i=0; i<32; i++) {
 			string name = LayerMask.LayerToName(i);
+            //Debug.Log("Layer name is " + name);
 			if(name != "") layers.Add( name );
 		}
+
+        //for(int i=0; i<32; i++) {
+        //Debug.Log("Selected masks are " + LayerMask.LayerToName(mask.value));
+        //}
+
 		return EditorGUILayout.MaskField( label, mask, layers.ToArray() );
 	}
 
 	private static bool IsLayerContains(LayerMask mask, int layer) {
-		return (mask.value & 1<<layer) != 0;
+        //Debug.Log("Mask value is " + mask.value);
+        //Debug.Log("Layer value is " + (layer >> 2));
+        if (mask.value >= 0)
+            return ((mask.value >> 2) & layer) != 0;
+        else
+            return true;
 	}
 	
 	
@@ -223,6 +234,16 @@ public class DecalEditor : Editor {
 		List<GameObject> objects = new List<GameObject>();
 		foreach(Renderer r in renderers) {
 			if( !r.enabled ) continue;
+            /*
+            if (r.gameObject.name == "bonnet") {
+                Debug.Log("bonnet layer is " + r.gameObject.layer);
+                //int test = (affectedLayers.value >> 2);
+                Debug.Log("affected layer is " + (affectedLayers.value >> 2));
+
+                Debug.Log("Mask test: " + (affectedLayers.value & r.gameObject.layer >> 2));
+                //Debug.Log("Mask test: " + (r.gameObject.layer & (affectedLayers.value >> 2)));
+            }
+            */
 			if( !IsLayerContains(affectedLayers, r.gameObject.layer) ) continue;
 			if( r.GetComponent<Decal>() != null ) continue;
 			
