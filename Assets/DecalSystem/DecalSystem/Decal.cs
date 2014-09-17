@@ -53,21 +53,25 @@ public class Decal : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update() {
-		bool hasChanged = oldMatrix != transform.localToWorldMatrix;
-		oldMatrix = transform.localToWorldMatrix;
+		// Only rebuild mesh when scaling
+		//bool hasChanged = oldMatrix != transform.localToWorldMatrix;
+		bool hasChanged = oldScale != transform.localScale;
+		//oldMatrix = transform.localToWorldMatrix;
 		oldScale = transform.localScale;
 		
 		
 		if(hasChanged) {
 			BuildDecal( this );
 		}
+
 	}
 
 	public void BuildDecal(Decal decal) {
 		MeshFilter filter = decal.GetComponent<MeshFilter>();
 		if(filter == null) filter = decal.gameObject.AddComponent<MeshFilter>();
 		if(decal.renderer == null) decal.gameObject.AddComponent<MeshRenderer>();
-		decal.renderer.material = decal.material;
+		//decal.renderer.material = decal.material;
+		decal.material = decal.renderer.material;
 		
 		if(decal.material == null || decal.sprite == null) {
 			filter.mesh = null;
