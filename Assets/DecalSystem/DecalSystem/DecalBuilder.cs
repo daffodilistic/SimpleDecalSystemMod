@@ -14,7 +14,7 @@ public class DecalBuilder {
 		if(affectedMesh == null) return;
 
 		float maxAngle = decal.maxAngle;
-
+	
 		Plane right = new Plane( Vector3.right, Vector3.right/2f );
 		Plane left = new Plane( -Vector3.right, -Vector3.right/2f );
 
@@ -66,7 +66,16 @@ public class DecalBuilder {
 			AddPolygon( poly, normal );
 		}
 
-		GenerateTexCoords(startVertexCount, decal.sprite);
+		if (decal.sprite)
+			GenerateTexCoords (startVertexCount, decal.sprite);
+		else {
+			Sprite fakeSprite = new Sprite();
+			int textureWidth = decal.material.mainTexture.width;
+			int textureHeight = decal.material.mainTexture.height;
+			Texture2D textureData = new Texture2D(textureWidth,textureHeight);
+			fakeSprite = Sprite.Create(textureData, new Rect(0,0,textureWidth,textureHeight), new Vector2(textureWidth/2,textureHeight/2));
+			GenerateTexCoords (startVertexCount, decal.sprite);
+		}
 	}
 
 	private static void AddPolygon(DecalPolygon poly, Vector3 normal) {

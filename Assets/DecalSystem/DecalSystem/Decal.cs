@@ -39,6 +39,7 @@ public class Decal : MonoBehaviour {
 		};
 
 		for(int i=0; i<8; i++) {
+
 			vts[i] = transform.TransformDirection( vts[i] );
 		}
 
@@ -70,7 +71,6 @@ public class Decal : MonoBehaviour {
 		MeshFilter filter = decal.GetComponent<MeshFilter>();
 		if(filter == null) filter = decal.gameObject.AddComponent<MeshFilter>();
 		if(decal.renderer == null) decal.gameObject.AddComponent<MeshRenderer>();
-		//decal.renderer.material = decal.material;
 		decal.material = decal.renderer.material;
 		
 		if(decal.material == null || decal.sprite == null) {
